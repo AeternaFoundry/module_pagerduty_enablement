@@ -15,5 +15,21 @@ EOT
     feature     = string
     enabled     = optional(bool)
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.enablements : (
+        contains(["service", "event_orchestration"], v.entity_type)
+      )
+    ])
+    error_message = "must be one of: \"service\", \"event_orchestration\""
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.enablements : (
+        contains(["aiops"], v.feature)
+      )
+    ])
+    error_message = "must be one of: \"aiops\""
+  }
 }
 
